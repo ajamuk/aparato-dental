@@ -3,40 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aparato Dental - Seguimiento</title>
+  <title>Aparato Dental</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>🦷 Aparato Dental</h1>
-      <p class="subtitle">Seguimiento diario de uso</p>
-    </header>
 
-    <section class="today-section">
-      <h2>Hoy — <span id="today-date"></span></h2>
+    <!-- VISTA PRINCIPAL -->
+    <div id="view-main">
+      <header>
+        <h1>🦷</h1>
+        <p class="today-label" id="today-date"></p>
+      </header>
+
+      <div class="today-status" id="today-status-msg"></div>
+
       <div class="today-options">
-        <button class="option-btn" data-value="0" data-label="&lt;4h">
+        <button class="option-btn" data-value="0">
           <span class="option-icon">😬</span>
           <span class="option-text">Menos de 4h</span>
         </button>
-        <button class="option-btn" data-value="1" data-label="&lt;8h">
+        <button class="option-btn" data-value="1">
           <span class="option-icon">😐</span>
           <span class="option-text">Menos de 8h</span>
         </button>
-        <button class="option-btn" data-value="2" data-label="&lt;12h">
+        <button class="option-btn" data-value="2">
           <span class="option-icon">🙂</span>
           <span class="option-text">Menos de 12h</span>
         </button>
-        <button class="option-btn" data-value="3" data-label="&gt;12h">
+        <button class="option-btn" data-value="3">
           <span class="option-icon">😁</span>
           <span class="option-text">Más de 12h</span>
         </button>
       </div>
-    </section>
 
-    <section class="stats-section">
-      <h2>Estadísticas</h2>
+      <button class="stats-toggle-btn" id="stats-toggle-btn">
+        Ver estadísticas ↓
+      </button>
+    </div>
+
+    <!-- VISTA ESTADÍSTICAS -->
+    <div id="view-stats" class="hidden">
+      <div class="stats-header">
+        <button class="back-btn" id="back-btn">← Volver</button>
+        <h2 class="stats-title">Estadísticas</h2>
+      </div>
+
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-value" id="stat-streak">0</div>
@@ -52,37 +64,39 @@
         </div>
         <div class="stat-card">
           <div class="stat-value" id="stat-good-pct">0%</div>
-          <div class="stat-label">Días con<br><small>≥12h</small></div>
+          <div class="stat-label">Cumplimiento<br><small>días ≥12h</small></div>
         </div>
       </div>
 
       <div class="chart-row">
-        <div class="bar-chart-wrapper">
+        <div class="panel">
           <h3>Distribución</h3>
           <div class="bar-chart" id="bar-chart"></div>
         </div>
-        <div class="monthly-summary-wrapper">
-          <h3>Este mes</h3>
+        <div class="panel">
+          <h3>Últimos 6 meses</h3>
           <div id="monthly-summary"></div>
         </div>
       </div>
-    </section>
 
-    <section class="grid-section">
-      <div class="grid-header">
-        <h2>Historial</h2>
-        <div class="legend">
-          <span class="legend-item"><span class="dot dot-0"></span> &lt;4h</span>
-          <span class="legend-item"><span class="dot dot-1"></span> &lt;8h</span>
-          <span class="legend-item"><span class="dot dot-2"></span> &lt;12h</span>
-          <span class="legend-item"><span class="dot dot-3"></span> ≥12h</span>
-          <span class="legend-item"><span class="dot dot-empty"></span> Sin dato</span>
+      <div class="panel">
+        <div class="grid-header">
+          <h3>Últimos 30 días</h3>
+          <div class="legend">
+            <span class="legend-item"><span class="dot dot-0"></span>&lt;4h</span>
+            <span class="legend-item"><span class="dot dot-1"></span>&lt;8h</span>
+            <span class="legend-item"><span class="dot dot-2"></span>&lt;12h</span>
+            <span class="legend-item"><span class="dot dot-3"></span>≥12h</span>
+            <span class="legend-item"><span class="dot dot-empty"></span>Sin dato</span>
+          </div>
         </div>
+        <div class="calendar-grid" id="calendar-grid"></div>
       </div>
-      <div class="calendar-grid" id="calendar-grid"></div>
-    </section>
+    </div>
+
   </div>
 
+  <div class="tooltip" id="tooltip"></div>
   <script src="app.js"></script>
 </body>
 </html>
