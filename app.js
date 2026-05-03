@@ -1,7 +1,7 @@
 const STORAGE_KEY = 'aparato-dental-data';
-const LABELS  = ['<4h', '<8h', '<12h', '≥12h'];
-const ICONS   = ['😬', '😐', '🙂', '😁'];
-const COLORS  = ['#e74c3c', '#e09b35', '#3aada8', '#4caf7d'];
+const LABELS  = ['<4h', '<8h', '<12h', '≥12h', 'Nada'];
+const ICONS   = ['😬', '😐', '🙂', '😁', '❌'];
+const COLORS  = ['#e74c3c', '#e09b35', '#3aada8', '#4caf7d', '#444455'];
 const DAYS    = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 const MONTHS  = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
                  'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -77,6 +77,7 @@ function renderTodayButtons() {
   if (saved !== undefined) {
     msg.textContent = `Registrado: ${ICONS[saved]} ${LABELS[saved]}`;
     msg.className = 'today-status ' + (saved === 3 ? 'recorded' : 'warning');
+    msg.style.color = saved === 4 ? '#555' : '';
   } else {
     msg.textContent = 'Sin registrar hoy';
     msg.className = 'today-status';
@@ -100,7 +101,7 @@ document.querySelectorAll('.option-btn').forEach(btn => {
 function computeStats() {
   const keys   = Object.keys(data).sort();
   const total  = keys.length;
-  const counts = [0, 0, 0, 0];
+  const counts = [0, 0, 0, 0, 0];
   keys.forEach(k => counts[data[k]]++);
 
   // current streak (≥12h days ending today)

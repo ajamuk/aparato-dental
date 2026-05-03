@@ -110,6 +110,20 @@ header h1 {
 .option-btn.active-1 { border-color: var(--c1); background: #2a2218; }
 .option-btn.active-2 { border-color: var(--c2); background: #162526; }
 .option-btn.active-3 { border-color: var(--c3); background: #162318; }
+.option-btn.active-4 { border-color: #555; background: #1e1e1e; }
+
+.option-none {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 20px;
+  margin-top: 4px;
+  opacity: 0.6;
+}
+
+.option-none:hover { opacity: 1; }
+.option-none .option-icon { font-size: 1.3rem; }
 
 .option-icon { font-size: 2rem; }
 .option-text { text-align: center; line-height: 1.3; }
@@ -337,6 +351,7 @@ h3 {
 .dot-1 { background: var(--c1); }
 .dot-2 { background: var(--c2); }
 .dot-3 { background: var(--c3); }
+.dot-4 { background: #444455; }
 .dot-empty { background: var(--c-empty); border: 1px solid #3e4260; }
 
 .calendar-grid {
@@ -378,6 +393,7 @@ h3 {
 .day-cell.val-1 { background: var(--c1); color: #fff; }
 .day-cell.val-2 { background: var(--c2); color: #fff; }
 .day-cell.val-3 { background: var(--c3); color: #fff; }
+.day-cell.val-4 { background: #444455; color: #888; }
 
 .day-cell.today-cell { box-shadow: 0 0 0 2px var(--accent); }
 
