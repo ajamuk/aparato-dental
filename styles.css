@@ -31,6 +31,161 @@ body {
 
 .hidden { display: none !important; }
 
+/* FÉRULA CARD (main view) */
+.ferula-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px 18px 14px;
+  margin-bottom: 20px;
+}
+
+.ferula-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.ferula-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.ferula-num {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.ferula-sep {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin: 0 2px;
+}
+
+#ferula-total {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+.ferula-arrow {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: 6px;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.ferula-arrow:hover { border-color: var(--accent); color: var(--text); }
+
+.ferula-edit-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: 6px;
+  padding: 3px 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.15s;
+}
+.ferula-edit-btn:hover { border-color: var(--accent); color: var(--text); }
+
+.ferula-bar-track {
+  width: 100%;
+  background: var(--border);
+  border-radius: 99px;
+  height: 8px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.ferula-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: var(--accent);
+  transition: width 0.4s ease;
+}
+
+.ferula-meta {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* FÉRULA STATS (stats view) */
+.ferula-stats-panel { margin-bottom: 14px; }
+
+.ferula-stats-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.ferula-big-num {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  min-width: 36px;
+  text-align: center;
+}
+
+.ferula-total-num { color: var(--text-muted); font-size: 1.4rem; }
+
+.ferula-progress-wrap { flex: 1; }
+
+.ferula-bar-lg { height: 12px; margin-bottom: 6px; }
+
+.ferula-progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.ferula-history {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 4px;
+}
+
+.ferula-history-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  padding: 5px 8px;
+  border-radius: 8px;
+  background: var(--surface2);
+}
+
+.fh-num {
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 28px;
+}
+
+.fh-date { color: var(--text-muted); flex: 1; }
+.fh-days { color: var(--text); font-weight: 600; }
+.fh-current { color: var(--c3); font-size: 0.7rem; }
+
 /* TOPBAR */
 .topbar {
   display: flex;

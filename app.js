@@ -11,6 +11,9 @@ const GH_FILE    = 'data.json';
 const TOKEN_KEY  = 'aparato-dental-gh-token';
 const CACHE_KEY  = 'aparato-dental-cache';
 
+// Default férula config
+const DEFAULT_FERULA = { total: 32, current: 7, history: { '7': todayKey() } };
+
 // ---- helpers ----
 
 function todayKey() { return dateToKey(new Date()); }
@@ -91,6 +94,16 @@ function setSyncStatus(state) {
 
 // ---- state ----
 let data = {};
+// ferula lives inside data.ferula
+function getFerula() {
+  return data.ferula || DEFAULT_FERULA;
+}
+function setFerula(f) {
+  data.ferula = f;
+  scheduleSave();
+  renderFerula();
+  renderFerulaStats();
+}
 
 // ---- VIEW SWITCHING ----
 
@@ -102,6 +115,7 @@ document.getElementById('stats-toggle-btn').addEventListener('click', () => {
   viewStats.classList.remove('hidden');
   renderStats();
   renderCalendar();
+  renderFerulaStats();
 });
 
 document.getElementById('back-btn').addEventListener('click', () => {
@@ -350,6 +364,148 @@ function closeEditPopup() {
   document.removeEventListener('click', outsideClose);
 }
 
+// ---- FÉRULA ----
+
+function renderFerula() {
+  const f = getFerula();
+  document.getElementById('ferula-current').textContent = f.current;
+  document.getElementById('ferula-total').textContent   = f.total;
+  const pct = Math.round(f.current / f.total * 100);
+  document.getElementById('ferula-bar').style.width = pct + '%';
+
+  const startDate = f.history[String(f.current)];
+  if (startDate) {
+    const days = daysSince(startDate);
+    const meta = document.getElementById('ferula-meta');
+    meta.textContent = `Desde ${formatDate(startDate)} · ${days} día${days !== 1 ? 's' : ''}`;
+  }
+}
+
+function renderFerulaStats() {
+  const f   = getFerula();
+  const pct = Math.round(f.current / f.total * 100);
+  const rem = f.total - f.current;
+
+  document.getElementById('fs-current').textContent  = f.current;
+  document.getElementById('fs-total').textContent    = f.total;
+  document.getElementById('fs-bar').style.width      = pct + '%';
+  document.getElementById('fs-pct').textContent      = pct + '%';
+  document.getElementById('fs-remaining').textContent = rem > 0 ? `Quedan ${rem}` : '¡Completado!';
+
+  // history list (sorted descending)
+  const hist = document.getElementById('ferula-history');
+  hist.innerHTML = '';
+  const entries = Object.entries(f.history)
+    .map(([num, date]) => ({ num: Number(num), date }))
+    .sort((a, b) => b.num - a.num);
+
+  entries.forEach(({ num, date }, i) => {
+    const isCurrent = num === f.current;
+    const nextEntry = entries[i - 1]; // previous in desc order = higher num
+    const days = isCurrent ? daysSince(date) : (nextEntry ? daysBetween(date, nextEntry.date) : daysSince(date));
+    const row = document.createElement('div');
+    row.className = 'ferula-history-row';
+    row.innerHTML = `
+      <span class="fh-num">#${num}</span>
+      <span class="fh-date">${formatDate(date)}</span>
+      <span class="fh-days">${days}d</span>
+      ${isCurrent ? '<span class="fh-current">actual</span>' : ''}`;
+    hist.appendChild(row);
+  });
+}
+
+function daysSince(dateStr) {
+  const then = new Date(dateStr + 'T00:00:00');
+  const now  = new Date();
+  now.setHours(0,0,0,0);
+  return Math.round((now - then) / 86400000);
+}
+
+function daysBetween(d1, d2) {
+  const a = new Date(d1 + 'T00:00:00');
+  const b = new Date(d2 + 'T00:00:00');
+  return Math.round(Math.abs(b - a) / 86400000);
+}
+
+function formatDate(dateStr) {
+  const [y, m, d] = dateStr.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+// férula arrows
+document.getElementById('ferula-prev').addEventListener('click', () => {
+  const f = { ...getFerula() };
+  if (f.current <= 1) return;
+  f.current--;
+  setFerula(f);
+});
+
+document.getElementById('ferula-next').addEventListener('click', () => {
+  const f = { ...getFerula() };
+  if (f.current >= f.total) return;
+  f.current++;
+  if (!f.history[String(f.current)]) f.history[String(f.current)] = todayKey();
+  setFerula(f);
+});
+
+document.getElementById('ferula-edit-btn').addEventListener('click', openFerulaEdit);
+
+function openFerulaEdit() {
+  closeEditPopup();
+  const f = getFerula();
+  const modal = document.createElement('div');
+  modal.id = 'ferula-modal';
+  modal.style.cssText = `
+    position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:400;
+    display:flex;align-items:center;justify-content:center;padding:20px;`;
+
+  modal.innerHTML = `
+    <div style="background:#1a1d27;border:1px solid #3e4260;border-radius:16px;
+                padding:24px;max-width:340px;width:100%;">
+      <h2 style="font-size:1rem;margin-bottom:18px;color:#e8eaf0;">⚙️ Configurar férula</h2>
+      <label style="display:block;font-size:0.8rem;color:#7c82a0;margin-bottom:6px;">Férula actual</label>
+      <input id="fe-current" type="number" min="1" value="${f.current}"
+        style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid #3e4260;
+               background:#0f1117;color:#e8eaf0;font-size:1rem;margin-bottom:14px;outline:none;"/>
+      <label style="display:block;font-size:0.8rem;color:#7c82a0;margin-bottom:6px;">Total de férulas</label>
+      <input id="fe-total" type="number" min="1" value="${f.total}"
+        style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid #3e4260;
+               background:#0f1117;color:#e8eaf0;font-size:1rem;margin-bottom:14px;outline:none;"/>
+      <label style="display:block;font-size:0.8rem;color:#7c82a0;margin-bottom:6px;">Fecha inicio de la atual</label>
+      <input id="fe-date" type="date" value="${f.history[String(f.current)] || todayKey()}"
+        style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid #3e4260;
+               background:#0f1117;color:#e8eaf0;font-size:0.9rem;margin-bottom:18px;outline:none;"/>
+      <div style="display:flex;gap:10px;">
+        <button id="fe-save"
+          style="flex:1;padding:10px;border-radius:8px;border:none;
+                 background:#6c8ef7;color:#fff;cursor:pointer;font-size:0.88rem;font-weight:600;">
+          Guardar
+        </button>
+        <button id="fe-cancel"
+          style="padding:10px 16px;border-radius:8px;border:1px solid #3e4260;
+                 background:transparent;color:#7c82a0;cursor:pointer;font-size:0.88rem;">
+          Cancelar
+        </button>
+      </div>
+    </div>`;
+
+  document.body.appendChild(modal);
+
+  document.getElementById('fe-save').addEventListener('click', () => {
+    const newCurrent = Number(document.getElementById('fe-current').value);
+    const newTotal   = Number(document.getElementById('fe-total').value);
+    const newDate    = document.getElementById('fe-date').value;
+    if (!newCurrent || !newTotal || newCurrent > newTotal) return;
+    const newF = { ...f, current: newCurrent, total: newTotal };
+    newF.history = { ...f.history, [String(newCurrent)]: newDate };
+    setFerula(newF);
+    modal.remove();
+  });
+
+  document.getElementById('fe-cancel').addEventListener('click', () => modal.remove());
+  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+}
+
 // ---- TOKEN MODAL ----
 
 function openTokenModal() {
@@ -464,8 +620,10 @@ async function init() {
       setSyncStatus('error');
     }
   }
+  if (!data.ferula) data.ferula = DEFAULT_FERULA;
   renderTodayDate();
   renderTodayButtons();
+  renderFerula();
 }
 
 init();

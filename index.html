@@ -21,6 +21,25 @@
         <p class="today-label" id="today-date"></p>
       </header>
 
+      <!-- FÉRULA CARD -->
+      <div class="ferula-card" id="ferula-card">
+        <div class="ferula-top">
+          <div class="ferula-label">Férula</div>
+          <div class="ferula-num">
+            <button class="ferula-arrow" id="ferula-prev">‹</button>
+            <span id="ferula-current">7</span>
+            <span class="ferula-sep">/</span>
+            <span id="ferula-total">32</span>
+            <button class="ferula-arrow" id="ferula-next">›</button>
+          </div>
+          <button class="ferula-edit-btn" id="ferula-edit-btn">···</button>
+        </div>
+        <div class="ferula-bar-track">
+          <div class="ferula-bar-fill" id="ferula-bar"></div>
+        </div>
+        <div class="ferula-meta" id="ferula-meta"></div>
+      </div>
+
       <div class="today-status" id="today-status-msg"></div>
 
       <div class="today-options">
@@ -62,6 +81,25 @@
         <h2 class="stats-title">Estadísticas</h2>
       </div>
 
+      <!-- FÉRULA STATS -->
+      <div class="panel ferula-stats-panel">
+        <h3>Progreso de férulas</h3>
+        <div class="ferula-stats-row">
+          <div class="ferula-big-num" id="fs-current">7</div>
+          <div class="ferula-progress-wrap">
+            <div class="ferula-bar-track ferula-bar-lg">
+              <div class="ferula-bar-fill" id="fs-bar"></div>
+            </div>
+            <div class="ferula-progress-labels">
+              <span id="fs-pct">0%</span>
+              <span id="fs-remaining"></span>
+            </div>
+          </div>
+          <div class="ferula-big-num ferula-total-num" id="fs-total">32</div>
+        </div>
+        <div id="ferula-history" class="ferula-history"></div>
+      </div>
+
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-value" id="stat-streak">0</div>
@@ -101,8 +139,8 @@
             <span class="legend-item"><span class="dot dot-2"></span>&lt;12h</span>
             <span class="legend-item"><span class="dot dot-3"></span>≥12h</span>
             <span class="legend-item"><span class="dot dot-5"></span>Noche</span>
-          <span class="legend-item"><span class="dot dot-4"></span>Nada</span>
-          <span class="legend-item"><span class="dot dot-empty"></span>Sin dato</span>
+            <span class="legend-item"><span class="dot dot-4"></span>Nada</span>
+            <span class="legend-item"><span class="dot dot-empty"></span>Sin dato</span>
           </div>
         </div>
         <div class="calendar-grid" id="calendar-grid"></div>
