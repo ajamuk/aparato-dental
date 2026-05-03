@@ -1,7 +1,7 @@
 const STORAGE_KEY = 'aparato-dental-data';
-const LABELS  = ['<4h', '<8h', '<12h', '≥12h', 'Nada'];
-const ICONS   = ['😬', '😐', '🙂', '😁', '❌'];
-const COLORS  = ['#e74c3c', '#e09b35', '#3aada8', '#4caf7d', '#444455'];
+const LABELS  = ['<4h', '<8h', '<12h', '≥12h', 'Nada', 'Noche'];
+const ICONS   = ['😬', '😐', '🙂', '😁', '❌', '🌙'];
+const COLORS  = ['#e74c3c', '#e09b35', '#3aada8', '#4caf7d', '#444455', '#3d3470'];
 const DAYS    = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 const MONTHS  = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
                  'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -101,7 +101,7 @@ document.querySelectorAll('.option-btn').forEach(btn => {
 function computeStats() {
   const keys   = Object.keys(data).sort();
   const total  = keys.length;
-  const counts = [0, 0, 0, 0, 0];
+  const counts = [0, 0, 0, 0, 0, 0];
   keys.forEach(k => counts[data[k]]++);
 
   // current streak (≥12h days ending today)
