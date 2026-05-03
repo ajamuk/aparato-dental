@@ -96,7 +96,12 @@ function setSyncStatus(state) {
 let data = {};
 // ferula lives inside data.ferula
 function getFerula() {
-  return data.ferula || DEFAULT_FERULA;
+  const f = data.ferula || {};
+  return {
+    total:   f.total   ?? DEFAULT_FERULA.total,
+    current: f.current ?? DEFAULT_FERULA.current,
+    history: f.history ?? { ...DEFAULT_FERULA.history },
+  };
 }
 function setFerula(f) {
   data.ferula = f;
@@ -620,7 +625,7 @@ async function init() {
       setSyncStatus('error');
     }
   }
-  if (!data.ferula) data.ferula = DEFAULT_FERULA;
+  if (!data.ferula) data.ferula = { ...DEFAULT_FERULA, history: { ...DEFAULT_FERULA.history } };
   renderTodayDate();
   renderTodayButtons();
   renderFerula();
